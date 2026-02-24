@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CarType } from './@types';
 import { CarCardComponent } from './car-card.component';
 import { CarService } from './car.service';
-import { CarType } from './@types';
 
 @Component({
   selector: 'app-car-listing',
   standalone: true,
-  imports: [CommonModule, CarCardComponent],
+  imports: [CarCardComponent],
   template: `
     <div class="container">
       <header class="header">
@@ -37,17 +36,19 @@ import { CarType } from './@types';
         </div>
       }
 
-      <div *ngIf="!loading() && cars().length === 0" class="no-results">
-        <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path
-            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        <p>No cars found matching your search</p>
-      </div>
+      @if (!loading() && cars().length === 0) {
+        <div class="no-results">
+          <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <p>No cars found matching your search</p>
+        </div>
+      }
 
       <div class="car-grid">
         @for (car of cars(); track car.id) {
@@ -59,26 +60,28 @@ import { CarType } from './@types';
   styles: [],
 })
 export class CarListingComponent implements OnInit {
+  carService = inject(CarService);
+
   cars = signal<CarType[]>([]);
   loading = signal(true);
 
-  constructor() {}
-
-  carService = inject(CarService);
-
-  async ngOnInit() {
+  ngOnInit() {
     this.loading.set(true);
-    const data = await this.carService.getCarListings();
-    this.cars.set(data);
-    this.loading.set(false);
+    const data = this.carService.getCarListings().subscribe((data) => {
+      this.cars.set(data.output ?? []);
+      this.loading.set(false);
+    });
   }
 
-  async onSearch(event: Event) {
+  onSearch(event: Event) {
     this.loading.set(true);
-    const data = await this.carService.getCarListings({
-      searchTerm: (event.target as unknown as { value: string }).value,
-    });
-    this.cars.set(data);
-    this.loading.set(false);
+    const data = this.carService
+      .getCarListings({
+        searchTerm: (event.target as unknown as { value: string }).value,
+      })
+      .subscribe((data) => {
+        this.cars.set(data.output ?? []);
+        this.loading.set(false);
+      });
   }
 }

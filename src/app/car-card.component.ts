@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, input, Input } from '@angular/core';
 import { CarService } from './car.service';
 import { CarType } from './@types';
@@ -6,7 +6,7 @@ import { CarType } from './@types';
 @Component({
   selector: 'app-car-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [DatePipe],
   template: `
     <div class="car-card">
       <div class="car-image-container">
@@ -32,6 +32,7 @@ import { CarType } from './@types';
                 stroke-linejoin="round"
               />
             </svg>
+            {{ car()?.createdOn | date: 'short' }}
           </span>
           <span class="spec-item">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -41,7 +42,6 @@ import { CarType } from './@types';
             {{ car()?.color }}
           </span>
         </div>
-        <button class="view-details-btn">View Details</button>
       </div>
     </div>
   `,
