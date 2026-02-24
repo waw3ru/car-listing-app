@@ -1,6 +1,5 @@
-import { CommonModule, DatePipe } from '@angular/common';
-import { Component, inject, input, Input } from '@angular/core';
-import { CarService } from './car.service';
+import { DatePipe } from '@angular/common';
+import { Component, inject, input } from '@angular/core';
 import { CarType } from './@types';
 
 @Component({
