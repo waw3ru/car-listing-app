@@ -30,14 +30,14 @@ import { CarType } from './@types';
         </div>
       </div>
 
-      @if (loading) {
+      @if (loading()) {
         <div class="loading">
           <div class="spinner"></div>
           <p>Loading cars...</p>
         </div>
       }
 
-      <div *ngIf="!loading && filteredCars.length === 0" class="no-results">
+      <div *ngIf="!loading() && cars().length === 0" class="no-results">
         <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path
             d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
@@ -50,7 +50,9 @@ import { CarType } from './@types';
       </div>
 
       <div class="car-grid">
-        <app-car-card></app-car-card>
+        @for (car of cars(); track car.id) {
+          <app-car-card [car]="car"></app-car-card>
+        }
       </div>
     </div>
   `,

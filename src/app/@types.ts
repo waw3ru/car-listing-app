@@ -20,13 +20,13 @@ export type CarType = {
   imageUrl: string;
   createdOn: string | null;
   updatedOn: string | null;
-  carMake: string;
+  carMake: CarMakeType;
   yearOfManufacture: number;
   minPrice: number;
   color: string;
   vipStatus: 'VIP' | 'NON_VIP' | 'VIP_PLUS';
   purchaseStatus: string;
-  carModel: string;
+  carModel: CarModelType;
 };
 
 export type PaginationQueryValidationType = {
