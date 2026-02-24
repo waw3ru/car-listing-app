@@ -1,0 +1,27 @@
+* {
+  font-family: 'Lato', sans-serif;
+  font-variant-ligatures: common-ligatures;
+  font-optical-sizing: auto;
+  font-size: 0.875rem; // 14px
+  min-height: 0;
+  min-width: 0;
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  text-rendering: optimizelegibility;
+
+  --nltd-primary-color: #006633;
+  --nltd-accent-color: #fbbf24;
+  --nltd-dark-color: #2f3640;
+  --nltd-light-color: #dee2e6;
+  --nltd-secondary-color: #8c7ae6;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
